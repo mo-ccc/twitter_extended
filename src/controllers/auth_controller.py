@@ -4,6 +4,8 @@ from schemas.UserSchema import UserSchema
 from schemas.AccountSchema import AccountSchema
 from models.User import User
 from models.Account import Account
+from app import db, bcrypt
+import flask_jwt_extended
 
 auth = flask.Blueprint("auth", __name__)
 
@@ -31,7 +33,7 @@ def register():
     account_data = account_schema.load(account_json)
     new_account = Account(
         email = account_data["email"],
-        password = account_data["password"],
+        password = bcrypt.generate_password_hash(account_data["password"]).decode('utf-8'),
         user = new_user
     )
     
@@ -39,4 +41,18 @@ def register():
     db.session.add(new_account)
     db.session.commit()
     
-    return account_schema.dump(Account.query.get(1))
+    return 'ok'
+    
+@auth.route("/login", methods=["POST"])
+def login():
+    data = flask.request.json
+    
+    account_data = AccountSchema().load(data)
+    
+    account = Account.query.filter_by(email=account_data["email"]).first()
+    if not account:
+        flask.abort(400, description='Invalid login')
+    
+    if bcrypt.check_password_hash(account.password, account_data["password"]):
+        return flask_jwt_extended.create_access_token(identity=account.user_id)
+    flask.abort(400, description='Invalid login')

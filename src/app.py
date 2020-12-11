@@ -6,6 +6,9 @@ db = flask_sqlalchemy.SQLAlchemy()
 import flask_jwt_extended
 jwt = flask_jwt_extended.JWTManager()
 
+import flask_bcrypt
+bcrypt = flask_bcrypt.Bcrypt()
+
 import flask_marshmallow
 ma = flask_marshmallow.Marshmallow()
 
@@ -16,7 +19,8 @@ def create_app():
     
     db.init_app(app)
     jwt.init_app(app)
-    ma.init_app(ma)
+    ma.init_app(app)
+    bcrypt.init_app(app)
     
     from commands import client
     app.register_blueprint(client)
