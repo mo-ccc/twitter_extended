@@ -1,5 +1,6 @@
 from app import db
 from models.Account import Account
+from models.Tweet import Tweet
 
 class User(db.Model):
     __tablename__ = "users"
@@ -9,3 +10,4 @@ class User(db.Model):
     screen_name = db.Column(db.String(20), nullable=False)
     
     account = db.relationship('Account', backref='user', uselist=False)
+    tweets = db.relationship('Tweet', backref='user')
