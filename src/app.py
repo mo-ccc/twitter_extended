@@ -16,7 +16,6 @@ def create_app():
     app = flask.Flask(__name__)
     app.config.from_pyfile("default_settings.py")
     
-    
     db.init_app(app)
     jwt.init_app(app)
     ma.init_app(app)

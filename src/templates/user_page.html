@@ -1,4 +1,5 @@
 <!doctype html>
+
 <div class="center">
 	<div id="header">
 		<h3>{{ user.screen_name }}</h2>
@@ -7,7 +8,7 @@
 		<div class="white" id="profile">
 			<div class="grey">
 			</div>
-			<img id="profile-image" src="{{ url_for('static', filename='twitter/default_profile.png') }}">
+			<img id="profile-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
 			<h2>{{ user.screen_name }}</h2>
 			<aria-label>@{{ user.name }}</aria-label>
 			
@@ -16,13 +17,13 @@
 		{% for tweet in tweets %}
 			<div class="white">
 				<div class="inline-margin-left">
-					<img class="tweet-image" src="{{ url_for('static', filename='twitter/default_profile.png') }}">
+					<img class="tweet-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
 					<div class="paddy">
 						<div class="inline">
 							<h3>{{ user.screen_name }}</h3>
 							<aria-label>@{{ user.name }}</aria-label>
 						</div>
-						<p>{{ tweet.text }}</p>
+						<p class="tweet">{{ tweet.text }}</p>
 					</div>
 				</div>
 			</div>
@@ -30,7 +31,7 @@
 	</div>
 </div>
 
-
+<script src="{{ url_for('static', filename='js/parse.js') }}"></script>
 
 <style>
 	body {
@@ -103,5 +104,10 @@
 		background-color: white;
 		width: 600px;
 		height: 6%;
+	}
+	
+	.tweet > img {
+		height: 19px;
+		vertical-align: bottom;
 	}
 </style>
