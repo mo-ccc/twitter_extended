@@ -1,0 +1,107 @@
+<!doctype html>
+<div class="center">
+	<div id="header">
+		<h3>{{ user.screen_name }}</h2>
+	</div>
+	<div id="main-column">
+		<div class="white" id="profile">
+			<div class="grey">
+			</div>
+			<img id="profile-image" src="{{ url_for('static', filename='twitter/default_profile.png') }}">
+			<h2>{{ user.screen_name }}</h2>
+			<aria-label>@{{ user.name }}</aria-label>
+			
+		</div>
+
+		{% for tweet in tweets %}
+			<div class="white">
+				<div class="inline-margin-left">
+					<img class="tweet-image" src="{{ url_for('static', filename='twitter/default_profile.png') }}">
+					<div class="paddy">
+						<div class="inline">
+							<h3>{{ user.screen_name }}</h3>
+							<aria-label>@{{ user.name }}</aria-label>
+						</div>
+						<p>{{ tweet.text }}</p>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+
+
+
+<style>
+	body {
+		background-color: rgb(29, 161, 242);
+	}
+	.white {
+		border: 0.5px solid grey;
+		width: 600px;
+		background-color: white;
+	}
+	.white > h2, h3 {
+		margin: 0px;
+	}
+	
+	.white > h2, h3, h4, aria-label, p {
+		margin-left: 20px;
+	}
+	
+	.inline, .inline-margin-left {
+		display: flex;
+		align-items: baseline;
+	}
+	
+	.inline-margin-left > img {
+		align-self: flex-start;
+	}
+	
+	.inline-margin-left {
+		margin-left: 20px;
+		margin-top: 15px;
+	}
+	
+	.tweet-image {
+		width: 10%;
+		border-radius: 999px;
+	}
+	
+	#profile {
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+	
+	#profile-image {
+		width: 25%;
+		border-radius: 999px;
+		margin-top: -18%;
+		border: 4px white solid;
+	}
+	
+	.center {
+		display: flex;
+		justify-content: center;
+	}
+	
+	#main-column {
+		border: 0px grey solid;
+	}
+	
+	.grey {
+		background-color: rgb(196, 207, 214);
+		height: 200px;
+		width: 100%;
+	}
+	
+	#header {
+		position: fixed;
+		display: flex;
+		align-items: center;
+		top: 0px;
+		background-color: white;
+		width: 600px;
+		height: 6%;
+	}
+</style>

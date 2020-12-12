@@ -27,11 +27,11 @@ def create_emote():
     if file_extension not in [".jpg", ".png", ".jpeg"]:
         flask.abort(400, description="Not an image")
     pil_image = Image.open(image)
-    pil_image.resize((250,250), Image.ANTIALIAS)
+    pil_image = pil_image.resize((250,250), Image.ANTIALIAS)
         
     from werkzeug.utils import secure_filename
     secure = secure_filename(f"{name}.png")
-    emote = Emote(name=name, url=f"static/{secure}", user=user)
+    emote = Emote(name=name, url=f"emotes/{secure}", user=user)
     db.session.add(emote)
     db.session.commit()
     
@@ -42,4 +42,7 @@ def create_emote():
     
 @emotes.route("/emotes/<id>", methods=["GET",])
 def display_emote(id):
-    return f"<img src=\"{flask.url_for('static', filename='emote/image.jpg')}\">"
+    emote = Emote.query.filter_by(id=id).first_or_404()
+    path = emote.url
+    print(path)
+    return f"<img src=\"{flask.url_for('static', filename=path)}\">"

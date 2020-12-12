@@ -14,4 +14,4 @@ def get_user(id):
     tweets = Tweet.query.filter_by(author_id=id).all()
     tweets_dump = TweetSchema(many=True).dump(tweets)
     
-    return flask.jsonify({"author": user_dump, "tweets": tweets_dump})
+    return flask.render_template("user_page.html", tweets=tweets_dump, user=user_dump)

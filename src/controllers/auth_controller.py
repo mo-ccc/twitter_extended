@@ -43,9 +43,17 @@ def register():
     
     return 'ok'
     
+@auth.route("/login", methods=["GET"])
+def login_page():
+    from services.forms import LoginForm
+    form = LoginForm()
+    return flask.render_template("login.html", form=form)
+    
 @auth.route("/login", methods=["POST"])
 def login():
-    data = flask.request.json
+    data = flask.request.form.to_dict()
+    if not data:
+        data = flask.request.json
     
     account_data = AccountSchema().load(data)
     
@@ -54,5 +62,8 @@ def login():
         flask.abort(400, description='Invalid login')
     
     if bcrypt.check_password_hash(account.password, account_data["password"]):
-        return flask_jwt_extended.create_access_token(identity=account.user_id)
+        token = flask_jwt_extended.create_access_token(identity=account.user_id)
+        response = flask.make_response()
+        response.set_cookie('Authorization', f"Bearer {token}")
+        return response
     flask.abort(400, description='Invalid login')
