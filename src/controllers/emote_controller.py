@@ -12,8 +12,8 @@ emotes = flask.Blueprint("emotes", __name__)
 @emotes.route("/emotes", methods=["POST",])
 @flask_jwt_extended.jwt_required
 def create_emote():
-    jwt_user = flask_jwt_extended.get_jwt_identity()
-    user = User.query.get(jwt_user)
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+    user = User.query.get(jwt_id)
     if not user:
         flask.abort(400, description="something went wrong")
 

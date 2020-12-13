@@ -52,8 +52,6 @@ def login_page():
 @auth.route("/login", methods=["POST"])
 def login():
     data = flask.request.form.to_dict()
-    if not data:
-        data = flask.request.json
     
     account_data = AccountSchema().load(data)
     
@@ -63,7 +61,7 @@ def login():
     
     if bcrypt.check_password_hash(account.password, account_data["password"]):
         token = flask_jwt_extended.create_access_token(identity=account.user_id)
-        response = flask.make_response()
-        response.set_cookie('Authorization', f"Bearer {token}")
+        response = flask.redirect(f"http://127.0.0.1:5000/users/{account.user_id}", code=302)
+        flask_jwt_extended.set_access_cookies(response, token)
         return response
     flask.abort(400, description='Invalid login')

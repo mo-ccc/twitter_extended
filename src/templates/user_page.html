@@ -11,9 +11,15 @@
 			<img id="profile-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
 			<h2>{{ user.screen_name }}</h2>
 			<aria-label>@{{ user.name }}</aria-label>
-			
 		</div>
 
+		{% if auth == True %}
+			<textarea form="tweet-form" id="text" name="text"></textarea>
+			<form method="post" id="tweet-form">
+				<input type="submit" value="send">
+			</form>
+		{% endif %}
+		
 		{% for tweet in tweets %}
 			<div class="white">
 				<div class="inline-margin-left">
@@ -39,7 +45,7 @@
 	}
 	.white {
 		border: 0.5px solid grey;
-		width: 600px;
+		width: 100%;
 		background-color: white;
 	}
 	.white > h2, h3 {
@@ -88,6 +94,7 @@
 	
 	#main-column {
 		border: 0px grey solid;
+		width: 600px;
 	}
 	
 	.grey {
@@ -109,5 +116,13 @@
 	.tweet > img {
 		height: 19px;
 		vertical-align: bottom;
+	}
+	
+	#text{
+		width: 100%;
+		height: 4em;
+		border: 1px solid black;
+		padding: 0px;
+		word-break: break-word;
 	}
 </style>

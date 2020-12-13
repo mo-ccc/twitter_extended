@@ -5,3 +5,5 @@ SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:postgres@localhost:543
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 JWT_SECRET_KEY = 'secret'
 MAX_CONTENT_LENGTH = 8 * 1024 * 1024
+JWT_TOKEN_LOCATION = ['cookies']
+JWT_COOKIE_CSRF_PROTECT = False
