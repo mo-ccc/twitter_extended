@@ -61,7 +61,7 @@ def login():
     
     if bcrypt.check_password_hash(account.password, account_data["password"]):
         token = flask_jwt_extended.create_access_token(identity=account.user_id)
-        response = flask.redirect(f"http://127.0.0.1:5000/users/{account.user_id}", code=302)
+        response = flask.redirect(f"/users/{account.user_id}", code=302)
         flask_jwt_extended.set_access_cookies(response, token)
         return response
     flask.abort(400, description='Invalid login')

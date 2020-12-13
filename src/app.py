@@ -7,7 +7,7 @@ import flask_jwt_extended
 jwt = flask_jwt_extended.JWTManager()
 @jwt.expired_token_loader
 def my_expired_token_callback():
-    return flask.redirect("http://127.0.0.1:5000/login", code=302)
+    return flask.redirect("/login", code=302)
 
 import flask_bcrypt
 bcrypt = flask_bcrypt.Bcrypt()

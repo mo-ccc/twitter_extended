@@ -36,5 +36,5 @@ def send_tweet(id):
     
     db.session.add(tweet)
     db.session.commit()
-    return flask.redirect(f"http://127.0.0.1:5000/users/{id}", code=302)
+    return flask.redirect(f"/users/{id}", code=302)
     
