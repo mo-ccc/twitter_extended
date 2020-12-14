@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+	<div>
+		<h1>{{ emote.name }}</h1>
+		<img src="{{ url_for('static', filename=emote.url) }}">
+		
+		{% if auth %}
+			<form method="post">
+				<input type="submit" value="favourite">
+			</form>
+		{% endif %}
+	</div>
+{% endblock %}

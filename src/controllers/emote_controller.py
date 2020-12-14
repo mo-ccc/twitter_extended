@@ -9,16 +9,25 @@ from PIL import Image
 
 emotes = flask.Blueprint("emotes", __name__)
 
-@emotes.route("/emotes", methods=["POST",])
+@emotes.route("/emotes", methods=["GET"])
+@flask_jwt_extended.jwt_required
+def get_management():
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+    user = User.query.get(jwt_id)
+    if not user:
+        flask.abort(400, description="something went wrong")
+    
+    return flask.render_template("manage_emotes.html", user=user)
+
+@emotes.route("/emotes", methods=["POST"])
 @flask_jwt_extended.jwt_required
 def create_emote():
     jwt_id = flask_jwt_extended.get_jwt_identity()
     user = User.query.get(jwt_id)
     if not user:
         flask.abort(400, description="something went wrong")
-
-    json_data = json.loads(flask.request.form.get('json'))
-    name = json_data["name"]
+    print(flask.request.form.to_dict())
+    name = flask.request.form.get("name")
     if 'image' not in flask.request.files:
         flask.abort(400, description='No image') 
 
@@ -36,13 +45,35 @@ def create_emote():
     db.session.commit()
     
     
-    pil_image.save(f"static/{secure}")
+    pil_image.save(f"static/emotes/{secure}")
     
     return 'ok'
     
-@emotes.route("/emotes/<id>", methods=["GET",])
+@emotes.route("/emotes/<id>", methods=["GET"])
+@flask_jwt_extended.jwt_optional
 def display_emote(id):
+    jwt_id = flask_jwt_extended.get_jwt_identity()
     emote = Emote.query.filter_by(id=id).first_or_404()
-    path = emote.url
-    print(path)
-    return f"<img src=\"{flask.url_for('static', filename=path)}\">"
+    if jwt_id:
+        return flask.render_template("emote_page.html", emote=emote, auth=True)
+    return flask.render_template("emote_page.html", emote=emote)
+   
+@emotes.route("/emotes/<id>", methods=["POST"])
+@flask_jwt_extended.jwt_required
+def favourite_emote(id):
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+    user = User.query.get(jwt_id)
+    if not user:
+        flask.abort(400, description="something went wrong")
+    
+    is_favourited = Emote.query.filter(Emote.favouriter.any(id=user.id)).filter_by(id=id).first()
+    if not is_favourited:
+        user.favourites.append(Emote.query.get(id))
+        flask.flash('added')
+    else:
+        user.favourites.remove(Emote.query.get(id))
+        flask.flash('removed')
+    
+    db.session.commit()
+    return flask.redirect(f"/emotes/{id}", code=302)
+    
