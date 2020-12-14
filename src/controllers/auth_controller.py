@@ -9,9 +9,15 @@ import flask_jwt_extended
 
 auth = flask.Blueprint("auth", __name__)
 
+@auth.route("/register", methods=["GET"])
+def register_page():
+    from services.forms import RegisterForm
+    form = RegisterForm()
+    return flask.render_template("register.html", form=form)
+
 @auth.route("/register", methods=["POST"])
 def register():
-    data = flask.request.json
+    data = flask.request.form.to_dict()
     account_json = {
         "email" : data["email"],
         "password" : data["password"]

@@ -2,6 +2,7 @@ from app import db
 from models.Account import Account
 from models.Tweet import Tweet
 from models.Emote import Emote
+from models.Favourite_Emotes import favourite_emotes
 
 class User(db.Model):
     __tablename__ = "users"
@@ -13,3 +14,7 @@ class User(db.Model):
     account = db.relationship('Account', backref='user', uselist=False)
     tweets = db.relationship('Tweet', backref='user')
     emotes = db.relationship('Emote', backref='user')
+    favourites = db.relationship(
+        'Emote',
+        secondary='favourite_emotes',
+        backref='favouriter')

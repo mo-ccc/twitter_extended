@@ -14,6 +14,11 @@
 		</div>
 
 		{% if auth == True %}
+			<div class="favourites">
+				{% for emote in favourite_emotes %}
+					<span class="favourite">{{ emote.name }}</span>
+				{% endfor %}
+			</div>
 			<textarea form="tweet-form" id="text" name="text"></textarea>
 			<form method="post" id="tweet-form">
 				<input type="submit" value="send">
@@ -124,5 +129,20 @@
 		border: 1px solid black;
 		padding: 0px;
 		word-break: break-word;
+	}
+	
+	.favourites{
+		background-color: red;
+	}
+	
+	.favourite {
+		padding: 0px;
+		margin: 0px;
+		margin-left: 10px;
+	}
+	
+	.favourite > img {
+		width: 25px;
+		margin-top: 10px;
 	}
 </style>

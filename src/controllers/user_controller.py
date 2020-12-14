@@ -1,6 +1,8 @@
 import flask
 from models.User import User
 from models.Tweet import Tweet
+from models.Emote import Emote
+from models.Favourite_Emotes import favourite_emotes
 from schemas.UserSchema import UserSchema
 from schemas.TweetSchema import TweetSchema
 import flask_jwt_extended
@@ -17,9 +19,11 @@ def get_user(id):
     tweets = Tweet.query.filter_by(author_id=id).order_by(Tweet.id.desc()).all()
     tweets_dump = TweetSchema(many=True).dump(tweets)
     
+    favourites = Emote.query.filter(Emote.favouriter.any(id=id)).all()
+    
     logged_in_user = flask_jwt_extended.get_jwt_identity()
     if logged_in_user == user.id:
-        return flask.render_template("user_page.html", tweets=tweets_dump, user=user_dump, auth=True)
+        return flask.render_template("user_page.html", tweets=tweets_dump, user=user_dump, auth=True, favourite_emotes=favourites)
     return flask.render_template("user_page.html", tweets=tweets_dump, user=user_dump)
     
 @users.route('/users/<id>', methods=['POST'])

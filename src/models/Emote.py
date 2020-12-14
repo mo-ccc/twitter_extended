@@ -1,4 +1,5 @@
 from app import db
+from models.Favourite_Emotes import favourite_emotes
 
 class Emote(db.Model):
     __tablename__ = "emotes"
