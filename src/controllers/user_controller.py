@@ -19,9 +19,9 @@ def get_user(id):
     
     favourites = Emote.query.filter(Emote.favouriter.any(id=id)).all()
     
-    logged_in_user = flask_jwt_extended.get_jwt_identity()
-    if logged_in_user == user.id:
-        return flask.render_template("user_page.html", tweets=tweets, user=user, auth=True, favourite_emotes=favourites)
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+    if jwt_id == user.id:
+        return flask.render_template("user_page.html", tweets=tweets, user=user, auth=jwt_id, favourite_emotes=favourites)
     return flask.render_template("user_page.html", tweets=tweets, user=user)
     
 @users.route('/users/<id>', methods=['POST'])
@@ -34,7 +34,8 @@ def send_tweet(id):
     
     data = flask.request.form.to_dict()
     tweet_data = TweetSchema().load(data, partial=("author_id"))
-    tweet = Tweet(text=tweet_data["text"], user=user)
+    input_content = tweet_data["text"] + " "
+    tweet = Tweet(text=input_content, user=user)
     
     # filter out emotes from the tweet and add tweet+emotes to the tweet_emote_joint table
     emotes_in_tweet = parse_emotes(tweet_data["text"])

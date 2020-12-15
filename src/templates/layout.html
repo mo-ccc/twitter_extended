@@ -16,7 +16,14 @@
 {% endwith %}
 <div id="left-column">
 	<div class="white">
-		<h3><a href="/emotes">manage your emotes</a></h3>
+		<h3><a href="/">home</a></h3>
+		{% if auth %}
+			<h3><a href="/users/{{ auth }}">my page</a></h3>
+			<h3><a href="/emotes">manage your emotes</a></h3>
+		{% else %}
+			<h3><a href="/login">login</a></h3>
+			<h3><a href="/register">register</a><h3>
+		{% endif %}
 	</div>
 </div>
 

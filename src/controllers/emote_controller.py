@@ -20,7 +20,7 @@ def get_management():
     
     owned_emotes = Emote.query.filter_by(author_id=user.id).all()
     
-    return flask.render_template("manage_emotes.html", user=user, owned_emotes=owned_emotes)
+    return flask.render_template("manage_emotes.html", user=user, auth=jwt_id, owned_emotes=owned_emotes)
 
 @emotes.route("/emotes", methods=["POST"])
 @flask_jwt_extended.jwt_required
@@ -58,7 +58,6 @@ def display_emote(id):
     jwt_id = flask_jwt_extended.get_jwt_identity()
     emote = Emote.query.filter_by(id=id).first_or_404()
     tweets = Tweet.query.filter(Tweet.emotes.any(id=emote.id)).all()
-    print(tweets)
     return flask.render_template("emote_page.html", emote=emote, tweets=tweets, auth=jwt_id)
    
 @emotes.route("/emotes/<id>", methods=["POST"])

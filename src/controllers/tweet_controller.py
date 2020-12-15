@@ -14,6 +14,6 @@ def homepage():
 
     tweets = Tweet.query.order_by(Tweet.id.desc()).all()
     
-    return flask.render_template("homepage.html", tweets=tweets)
+    return flask.render_template("homepage.html", tweets=tweets, auth=jwt_id)
     
 

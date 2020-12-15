@@ -10,7 +10,7 @@
 				<aria-label>@{{ user.name }}</aria-label>
 			</div>
 
-			{% if auth == True %}
+			{% if auth %}
 				<div class="favourites">
 					{% for emote in favourite_emotes %}
 						<span class="favourite">{{ emote.name }}</span>
