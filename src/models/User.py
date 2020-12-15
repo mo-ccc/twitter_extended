@@ -10,6 +10,10 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
     screen_name = db.Column(db.String(20), nullable=False)
+    verified = db.Column(db.Boolean())
+    created_at = db.Column(db.DateTime(timezone=False), nullable=False)
+    is_default = db.Column(db.Boolean())
+    is_admin = db.Column(db.Boolean())
     
     account = db.relationship('Account', backref='user', uselist=False)
     tweets = db.relationship('Tweet', backref='user')
@@ -17,4 +21,5 @@ class User(db.Model):
     favourites = db.relationship(
         'Emote',
         secondary='favourite_emotes',
-        backref='favouriter')
+        backref='favouriter'
+    )

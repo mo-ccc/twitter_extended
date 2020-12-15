@@ -5,11 +5,25 @@
 {% block content %}
 <form method="post">
 	<label for="email">Email:</label>
-	<input name="email" id="email" required>
+	<input type="email" name="email" id="email" required>
 	
 	<label for="password">Password:</label>
-	<input name="password" id="password" required>
+	<input type="password" name="password" id="password" required>
 	
-	<input type="submit" value="Log In">
+	<input id="button" type="submit" value="Log In">
 </form>
+
+<style>
+	form {
+		display: grid;
+		grid-template-columns: 100px 200px;
+	}
+	
+	#button {
+		grid-column: 2;
+		width: 30%;
+		justify-self: end;
+	}
+</style>
 {% endblock %}
+

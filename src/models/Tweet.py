@@ -9,6 +9,12 @@ class Tweet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     text = db.Column(db.String(280), nullable=False)
+    created_at = db.Column(db.DateTime(), nullable=False)
+    source_device = db.Column(db.String())
+    in_reply_to_tweet_id = db.Column(db.Integer, db.ForeignKey('tweets.id'))
+    conversation_id = db.Column(db.Integer, db.ForeignKey('tweets.id'))
+    possibly_sensitive = db.Column(db.Boolean())
+    filter_level = db.Column(db.Integer())
     
     emotes = db.relationship(
         'Emote',

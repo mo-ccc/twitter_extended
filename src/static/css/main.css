@@ -1,0 +1,99 @@
+body {
+		background-color: rgb(29, 161, 242);
+	}
+	
+#left-column {
+	position: absolute;
+}
+
+.white {
+	border: 0.5px solid grey;
+	width: 100%;
+	background-color: white;
+}
+#left-column > .white {
+	width: 200px;
+}
+
+.white > h2, h3 {
+	margin: 0px;
+}
+
+.white > h2, h3, h4, aria-label, p {
+	margin-left: 20px;
+}
+
+.inline, .inline-margin-left {
+	display: flex;
+	align-items: baseline;
+}
+
+.inline-margin-left > img {
+	align-self: flex-start;
+}
+
+.inline-margin-left {
+	margin-left: 20px;
+	margin-top: 15px;
+}
+
+.tweet-image {
+	width: 10%;
+	border-radius: 999px;
+}
+
+#profile {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+#profile-image {
+	width: 25%;
+	border-radius: 999px;
+	margin-top: -18%;
+	border: 4px white solid;
+}
+
+.center {
+	display: flex;
+	justify-content: center;
+}
+
+#main-column {
+	border: 0px grey solid;
+	width: 600px;
+}
+
+.grey {
+	background-color: rgb(196, 207, 214);
+	height: 200px;
+	width: 100%;
+}
+
+.tweet > img {
+	height: 19px;
+	vertical-align: bottom;
+}
+
+#text{
+	width: 100%;
+	height: 4em;
+	border: 1px solid black;
+	padding: 0px;
+	word-break: break-word;
+}
+
+.favourites{
+	background-color: red;
+}
+
+.favourite {
+	padding: 0px;
+	margin: 0px;
+	margin-left: 10px;
+}
+
+.favourite > img {
+	width: 25px;
+	margin-top: 10px;
+}

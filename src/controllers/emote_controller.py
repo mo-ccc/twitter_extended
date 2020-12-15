@@ -3,6 +3,7 @@ import json
 import flask_jwt_extended
 from models.User import User
 from models.Emote import Emote
+from models.Tweet import Tweet
 from app import db
 import os
 from PIL import Image
@@ -56,9 +57,9 @@ def create_emote():
 def display_emote(id):
     jwt_id = flask_jwt_extended.get_jwt_identity()
     emote = Emote.query.filter_by(id=id).first_or_404()
-    if jwt_id:
-        return flask.render_template("emote_page.html", emote=emote, auth=True)
-    return flask.render_template("emote_page.html", emote=emote)
+    tweets = Tweet.query.filter(Tweet.emotes.any(id=emote.id)).all()
+    print(tweets)
+    return flask.render_template("emote_page.html", emote=emote, tweets=tweets, auth=jwt_id)
    
 @emotes.route("/emotes/<id>", methods=["POST"])
 @flask_jwt_extended.jwt_required

@@ -8,3 +8,4 @@ class Emote(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     name = db.Column(db.String(15), nullable=False, unique=True)
     url = db.Column(db.String(), nullable=False)
+    created_at = db.Column(db.DateTime(), nullable=False)

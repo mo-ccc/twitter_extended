@@ -38,10 +38,12 @@ def send_tweet(id):
     tweet_data = TweetSchema().load(data, partial=("author_id"))
     tweet = Tweet(text=tweet_data["text"], user=user)
     
+    # filter out emotes from the tweet and add tweet+emotes to the tweet_emote_joint table
     emotes_in_tweet = parse_emotes(tweet_data["text"])
     emotes = [Emote.query.filter_by(name=x).first() for x in emotes_in_tweet]
     for x in emotes:
-        tweet.emotes.append(x)
+        if x:
+            tweet.emotes.append(x)
     
     db.session.add(tweet)
     db.session.commit()
@@ -51,7 +53,7 @@ def parse_emotes(text):
   result = []
   splited = text.split(":")
   for x in splited:
-    if " " not in x and x:
+    if " " not in x and x and x not in result:
       result.append(x)
   return result
     
