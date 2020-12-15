@@ -14,17 +14,15 @@ users = flask.Blueprint("users", __name__)
 @flask_jwt_extended.jwt_optional
 def get_user(id):
     user = User.query.filter_by(id=id).first_or_404()
-    user_dump = UserSchema().dump(user)
     
     tweets = Tweet.query.filter_by(author_id=id).order_by(Tweet.id.desc()).all()
-    tweets_dump = TweetSchema(many=True).dump(tweets)
     
     favourites = Emote.query.filter(Emote.favouriter.any(id=id)).all()
     
     logged_in_user = flask_jwt_extended.get_jwt_identity()
     if logged_in_user == user.id:
-        return flask.render_template("user_page.html", tweets=tweets_dump, user=user_dump, auth=True, favourite_emotes=favourites)
-    return flask.render_template("user_page.html", tweets=tweets_dump, user=user_dump)
+        return flask.render_template("user_page.html", tweets=tweets, user=user, auth=True, favourite_emotes=favourites)
+    return flask.render_template("user_page.html", tweets=tweets, user=user)
     
 @users.route('/users/<id>', methods=['POST'])
 @flask_jwt_extended.jwt_required

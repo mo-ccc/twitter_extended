@@ -13,23 +13,5 @@
 			</form>
 		{% endif %}
 	</div>
-	<div class="center">
-		<div id="main-column">
-			{% for tweet in tweets %}
-				<div class="white">
-					<div class="inline-margin-left">
-						<img class="tweet-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
-						<div class="paddy">
-							<div class="inline">
-								<h3>{{ tweet.user.screen_name }}</h3>
-								<aria-label>@{{ tweet.user.name }}</aria-label>
-							</div>
-							<p class="tweet">{{ tweet.text }}</p>
-						</div>
-					</div>
-				</div>
-			{% endfor %}
-		</div>
-	</div>
 	<script src="{{ url_for('static', filename='js/parse.js') }}"></script>
 {% endblock %}

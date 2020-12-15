@@ -1,5 +1,10 @@
 <!doctype html>
 <title>My Application</title>
+
+<head>
+	<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+</head>
+
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -9,4 +14,30 @@
     </ul>
   {% endif %}
 {% endwith %}
+<div id="left-column">
+	<div class="white">
+		<h3><a href="/emotes">manage your emotes</a></h3>
+	</div>
+</div>
+
 {% block body %}{% endblock %}
+
+<div class="center">
+	<div id="main-column">
+		{% for tweet in tweets %}
+			<div class="white">
+				<div class="inline-margin-left">
+					<img class="tweet-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
+					<div class="paddy">
+						<div class="inline">
+							<h3><a href="/users/{{tweet.user.id}}">{{ tweet.user.screen_name }}</a></h3>
+							<aria-label>@{{ tweet.user.name }}</aria-label>
+						</div>
+						<p class="tweet">{{ tweet.text }}</p>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+<script src="{{ url_for('static', filename='js/parse.js') }}"></script>

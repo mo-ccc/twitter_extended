@@ -7,3 +7,13 @@ from models.User import User
 
 tweets = flask.Blueprint('tweets', __name__)
 
+@tweets.route("/", methods=["GET"])
+@flask_jwt_extended.jwt_optional
+def homepage():
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+
+    tweets = Tweet.query.order_by(Tweet.id.desc()).all()
+    
+    return flask.render_template("homepage.html", tweets=tweets)
+    
+
