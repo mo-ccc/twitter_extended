@@ -17,7 +17,9 @@ def get_management():
     if not user:
         flask.abort(400, description="something went wrong")
     
-    return flask.render_template("manage_emotes.html", user=user)
+    owned_emotes = Emote.query.filter_by(author_id=user.id).all()
+    
+    return flask.render_template("manage_emotes.html", user=user, owned_emotes=owned_emotes)
 
 @emotes.route("/emotes", methods=["POST"])
 @flask_jwt_extended.jwt_required
@@ -77,3 +79,20 @@ def favourite_emote(id):
     db.session.commit()
     return flask.redirect(f"/emotes/{id}", code=302)
     
+@emotes.route("/emotes/<id>", methods=["DELETE"])
+@flask_jwt_extended.jwt_required
+def delete_emote(id):
+    jwt_id = flask_jwt_extended.get_jwt_identity
+    user = User.query.get(jwt_id)
+    if not user:
+        flask.abort(400, description="something went wrong")
+    
+    emote = Emote.query.filter_by(id=id).first_or_404()
+    
+    if emote.author_id != user.id:
+        flask.abort(400, description="you do not have permission to do that")
+    
+    os.remove(os.path.join('/static', emote.url))
+    db.session.delete(emote)
+    db.session.commit()
+    return flask.redirect("/emotes", code=302)

@@ -1,46 +1,51 @@
 <!doctype html>
 
-<div class="center">
-	<div id="header">
-		<h3>{{ user.screen_name }}</h2>
-	</div>
-	<div id="main-column">
-		<div class="white" id="profile">
-			<div class="grey">
-			</div>
-			<img id="profile-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
-			<h2>{{ user.screen_name }}</h2>
-			<aria-label>@{{ user.name }}</aria-label>
+<main>
+	<div id="left-column">
+		<div class="white">
+			<h3><a href="/emotes">manage your emotes</a></h3>
 		</div>
+	</div>
 
-		{% if auth == True %}
-			<div class="favourites">
-				{% for emote in favourite_emotes %}
-					<span class="favourite">{{ emote.name }}</span>
-				{% endfor %}
+	<div class="center">
+		<div id="main-column">
+			<div class="white" id="profile">
+				<div class="grey">
+				</div>
+				<img id="profile-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
+				<h2>{{ user.screen_name }}</h2>
+				<aria-label>@{{ user.name }}</aria-label>
 			</div>
-			<textarea form="tweet-form" id="text" name="text"></textarea>
-			<form method="post" id="tweet-form">
-				<input type="submit" value="send">
-			</form>
-		{% endif %}
-		
-		{% for tweet in tweets %}
-			<div class="white">
-				<div class="inline-margin-left">
-					<img class="tweet-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
-					<div class="paddy">
-						<div class="inline">
-							<h3>{{ user.screen_name }}</h3>
-							<aria-label>@{{ user.name }}</aria-label>
+
+			{% if auth == True %}
+				<div class="favourites">
+					{% for emote in favourite_emotes %}
+						<span class="favourite">{{ emote.name }}</span>
+					{% endfor %}
+				</div>
+				<textarea form="tweet-form" id="text" name="text"></textarea>
+				<form method="post" id="tweet-form">
+					<input type="submit" value="send">
+				</form>
+			{% endif %}
+			
+			{% for tweet in tweets %}
+				<div class="white">
+					<div class="inline-margin-left">
+						<img class="tweet-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
+						<div class="paddy">
+							<div class="inline">
+								<h3>{{ user.screen_name }}</h3>
+								<aria-label>@{{ user.name }}</aria-label>
+							</div>
+							<p class="tweet">{{ tweet.text }}</p>
 						</div>
-						<p class="tweet">{{ tweet.text }}</p>
 					</div>
 				</div>
-			</div>
-		{% endfor %}
+			{% endfor %}
+		</div>
 	</div>
-</div>
+</main>
 
 <script src="{{ url_for('static', filename='js/parse.js') }}"></script>
 
@@ -48,11 +53,20 @@
 	body {
 		background-color: rgb(29, 161, 242);
 	}
+	
+	#left-column {
+		position: absolute;
+	}
+	
 	.white {
 		border: 0.5px solid grey;
 		width: 100%;
 		background-color: white;
 	}
+	#left-column > .white {
+		width: 200px;
+	}
+	
 	.white > h2, h3 {
 		margin: 0px;
 	}
@@ -106,16 +120,6 @@
 		background-color: rgb(196, 207, 214);
 		height: 200px;
 		width: 100%;
-	}
-	
-	#header {
-		position: fixed;
-		display: flex;
-		align-items: center;
-		top: 0px;
-		background-color: white;
-		width: 600px;
-		height: 6%;
 	}
 	
 	.tweet > img {

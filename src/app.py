@@ -15,6 +15,9 @@ bcrypt = flask_bcrypt.Bcrypt()
 import flask_marshmallow
 ma = flask_marshmallow.Marshmallow()
 
+import flask_migrate
+migrate = flask_migrate.Migrate()
+
 def create_app():
     app = flask.Flask(__name__)
     app.config.from_pyfile("default_settings.py")
@@ -23,6 +26,7 @@ def create_app():
     jwt.init_app(app)
     ma.init_app(app)
     bcrypt.init_app(app)
+    migrate.init_app(app, db)
     
     from commands import client
     app.register_blueprint(client)

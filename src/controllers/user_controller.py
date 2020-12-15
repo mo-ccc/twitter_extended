@@ -38,7 +38,20 @@ def send_tweet(id):
     tweet_data = TweetSchema().load(data, partial=("author_id"))
     tweet = Tweet(text=tweet_data["text"], user=user)
     
+    emotes_in_tweet = parse_emotes(tweet_data["text"])
+    emotes = [Emote.query.filter_by(name=x).first() for x in emotes_in_tweet]
+    for x in emotes:
+        tweet.emotes.append(x)
+    
     db.session.add(tweet)
     db.session.commit()
     return flask.redirect(f"/users/{id}", code=302)
+    
+def parse_emotes(text):
+  result = []
+  splited = text.split(":")
+  for x in splited:
+    if " " not in x and x:
+      result.append(x)
+  return result
     

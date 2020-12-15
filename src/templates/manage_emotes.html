@@ -10,4 +10,22 @@
 			<input type="submit" value="submit">
 		</form>
 	</div>
+	
+	<div>
+		<h4>Owned emotes:</h4>
+		{% for emote in owned_emotes %}
+			<div>
+				<img src="{{ url_for('static', filename=emote.url) }}">	
+				<a href="/emotes/{{ emote.id }}">{{ emote.name }}</a>
+			</div>
+		{% endfor %}
+	</div>
+	
+	<style>
+	img {
+		width: 40px;
+		vertical-align: middle;
+	}
+	</style>
 {% endblock %}
+
