@@ -1,8 +1,8 @@
-"""empty message
+"""complete migration
 
-Revision ID: 1118e9937a9f
+Revision ID: 4c188b7e4e1f
 Revises: 
-Create Date: 2020-12-15 14:52:59.207179
+Create Date: 2020-12-15 15:11:14.323329
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1118e9937a9f'
+revision = '4c188b7e4e1f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,6 +25,7 @@ def upgrade():
     sa.Column('verified', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('is_default', sa.Boolean(), nullable=True),
+    sa.Column('is_admin', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('accounts',
@@ -40,6 +41,7 @@ def upgrade():
     sa.Column('author_id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=15), nullable=False),
     sa.Column('url', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['author_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
@@ -48,7 +50,15 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('author_id', sa.Integer(), nullable=False),
     sa.Column('text', sa.String(length=280), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('source_device', sa.String(), nullable=True),
+    sa.Column('in_reply_to_tweet_id', sa.Integer(), nullable=True),
+    sa.Column('conversation_id', sa.Integer(), nullable=True),
+    sa.Column('possibly_sensitive', sa.Boolean(), nullable=True),
+    sa.Column('filter_level', sa.Enum('NONE', 'LOW', 'MEDIUM', name='filterlevel'), nullable=True),
     sa.ForeignKeyConstraint(['author_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['conversation_id'], ['tweets.id'], ),
+    sa.ForeignKeyConstraint(['in_reply_to_tweet_id'], ['tweets.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('favourite_emotes',

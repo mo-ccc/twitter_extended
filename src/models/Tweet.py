@@ -1,6 +1,12 @@
 from app import db
 from models.Emote import Emote
 from models.Tweet_Emote_Joint import tweet_emote_joint
+import enum
+
+class FilterLevel(enum.Enum):
+    NONE = 0
+    LOW = 1
+    MEDIUM = 2
 
 
 class Tweet(db.Model):
@@ -14,11 +20,14 @@ class Tweet(db.Model):
     in_reply_to_tweet_id = db.Column(db.Integer, db.ForeignKey('tweets.id'))
     conversation_id = db.Column(db.Integer, db.ForeignKey('tweets.id'))
     possibly_sensitive = db.Column(db.Boolean())
-    filter_level = db.Column(db.Integer())
+    filter_level = db.Column(db.Enum(FilterLevel))
     
     emotes = db.relationship(
         'Emote',
         secondary='tweet_emote_joint',
         backref='tweet'
     )
+    
+
+
     
