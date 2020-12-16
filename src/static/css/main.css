@@ -100,3 +100,11 @@ body {
 	width: 25px;
 	margin-top: 10px;
 }
+
+.space {
+	margin: 20px 0px;
+}
+
+.marg-left {
+	margin-left: 20px;
+}
