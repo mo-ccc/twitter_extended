@@ -17,7 +17,7 @@
 					{% endfor %}
 				</div>
 				<textarea form="tweet-form" id="text" name="text"></textarea>
-				<form method="post" id="tweet-form">
+				<form method="post" id="tweet-form" action="/tweet" required>
 					<input type="submit" value="send">
 				</form>
 			{% endif %}

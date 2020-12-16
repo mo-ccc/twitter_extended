@@ -5,6 +5,7 @@ db = flask_sqlalchemy.SQLAlchemy()
 
 import flask_jwt_extended
 jwt = flask_jwt_extended.JWTManager()
+
 @jwt.expired_token_loader
 def my_expired_token_callback():
     return flask.redirect("/logout", code=302)

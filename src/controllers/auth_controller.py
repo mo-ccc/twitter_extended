@@ -12,9 +12,7 @@ auth = flask.Blueprint("auth", __name__)
 
 @auth.route("/register", methods=["GET"])
 def register_page():
-    from services.forms import RegisterForm
-    form = RegisterForm()
-    return flask.render_template("register.html", form=form)
+    return flask.render_template("register.html")
 
 @auth.route("/register", methods=["POST"])
 def register():
@@ -35,7 +33,6 @@ def register():
         screen_name = user_data["screen_name"],
     )
     
-    
     account_schema = AccountSchema()
     account_data = account_schema.load(account_json)
     new_account = Account(
@@ -52,9 +49,7 @@ def register():
     
 @auth.route("/login", methods=["GET"])
 def login_page():
-    from services.forms import LoginForm
-    form = LoginForm()
-    return flask.render_template("login.html", form=form)
+    return flask.render_template("login.html")
     
 @auth.route("/logout", methods=["GET"])
 def logout():
