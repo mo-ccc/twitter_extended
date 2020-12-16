@@ -3,15 +3,17 @@
 	<head>
 		<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
 	</head>
-	<div>
-		<h1>{{ emote.name }}</h1>
-		<img src="{{ url_for('static', filename=emote.url) }}">
-		
-		{% if auth %}
-			<form method="post">
-				<input type="submit" value="favourite">
-			</form>
-		{% endif %}
+	<div class="center">
+		<div class="main-column">
+			<h1>{{ emote.name }}</h1>
+			<img src="{{ url_for('static', filename=emote.url) }}">
+			
+			{% if auth %}
+				<form method="post">
+					<input type="submit" value="favourite">
+				</form>
+			{% endif %}
+		</div>
 	</div>
 	<script src="{{ url_for('static', filename='js/parse.js') }}"></script>
 {% endblock %}

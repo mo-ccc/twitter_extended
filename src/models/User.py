@@ -9,10 +9,12 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(20), nullable=False, unique=True)
+    
     screen_name = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime(timezone=False), nullable=False,
         default=datetime.utcnow)
+
     verified = db.Column(db.Boolean(), default=False)
     is_default = db.Column(db.Boolean(), default=True)
     is_admin = db.Column(db.Boolean(), default=False)

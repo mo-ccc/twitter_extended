@@ -48,13 +48,19 @@ def register():
     db.session.add(new_account)
     db.session.commit()
     
-    return 'ok'
+    return flask.redirect('/', code=302)
     
 @auth.route("/login", methods=["GET"])
 def login_page():
     from services.forms import LoginForm
     form = LoginForm()
     return flask.render_template("login.html", form=form)
+    
+@auth.route("/logout", methods=["GET"])
+def logout():
+    response = flask.redirect("/", code=302)
+    response.delete_cookie(key='access_token_cookie', path='/')
+    return response
     
 @auth.route("/login", methods=["POST"])
 def login():

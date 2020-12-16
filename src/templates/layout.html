@@ -39,6 +39,7 @@
 						<div class="inline">
 							<h3><a href="/users/{{tweet.user.id}}">{{ tweet.user.screen_name }}</a></h3>
 							<aria-label>@{{ tweet.user.name }}</aria-label>
+							<aria-label>{{ tweet.created_at.strftime("%d/%m/%Y, %H:%M:%S")}}</aria-label>
 						</div>
 						<p class="tweet">{{ tweet.text }}</p>
 					</div>

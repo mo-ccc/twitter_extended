@@ -29,7 +29,7 @@ def create_emote():
     user = User.query.get(jwt_id)
     if not user:
         flask.abort(400, description="something went wrong")
-    print(flask.request.form.to_dict())
+
     name = flask.request.form.get("name")
     if 'image' not in flask.request.files:
         flask.abort(400, description='No image') 
@@ -38,6 +38,7 @@ def create_emote():
     file_extension = os.path.splitext(image.filename)[1]
     if file_extension not in [".jpg", ".png", ".jpeg"]:
         flask.abort(400, description="Not an image")
+
     pil_image = Image.open(image)
     pil_image = pil_image.resize((250,250), Image.ANTIALIAS)
         
@@ -50,7 +51,7 @@ def create_emote():
     
     pil_image.save(f"static/emotes/{secure}")
     
-    return 'ok'
+    return flask.redirect('/emotes', code=302)
     
 @emotes.route("/emotes/<id>", methods=["GET"])
 @flask_jwt_extended.jwt_optional

@@ -1,8 +1,8 @@
-"""complete migration
+"""Initial
 
-Revision ID: 4c188b7e4e1f
+Revision ID: 1b2f89225efc
 Revises: 
-Create Date: 2020-12-15 15:11:14.323329
+Create Date: 2020-12-16 11:46:11.735630
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4c188b7e4e1f'
+revision = '1b2f89225efc'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,11 +22,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=20), nullable=False),
     sa.Column('screen_name', sa.String(length=20), nullable=False),
-    sa.Column('verified', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('verified', sa.Boolean(), nullable=True),
     sa.Column('is_default', sa.Boolean(), nullable=True),
     sa.Column('is_admin', sa.Boolean(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('name')
     )
     op.create_table('accounts',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -34,7 +35,8 @@ def upgrade():
     sa.Column('email', sa.String(), nullable=False),
     sa.Column('password', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email')
     )
     op.create_table('emotes',
     sa.Column('id', sa.Integer(), nullable=False),
