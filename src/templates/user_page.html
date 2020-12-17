@@ -21,7 +21,7 @@
 				{% endif %}
 			</div>
 
-			{% if auth %}
+			{% if owner %}
 				<div class="card text-white bg-secondary mb-3">
 					<div class="card-header">
 						<h3>compose tweet</h3>
@@ -32,10 +32,10 @@
 						</div>
 					</div>
 					<div class="card-body">
-						<textarea form="tweet-form" id="text" name="text"></textarea>
+						<textarea form="tweet-form" id="text" name="text" maxlength="280" required></textarea>
 					</div>
 					<div class="card-footer text-muted">
-						<form method="post" id="tweet-form" action="/tweet" required>
+						<form method="post" id="tweet-form" action="/tweet">
 							<input type="submit" value="send">
 						</form>
 					</div>

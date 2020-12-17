@@ -44,6 +44,7 @@ def register():
     db.session.add(new_user)
     db.session.add(new_account)
     db.session.commit()
+    flask.flash("registration successful")
     
     return flask.redirect('/', code=302)
     
@@ -53,6 +54,7 @@ def login_page():
     
 @auth.route("/logout", methods=["GET"])
 def logout():
+    flask.flash("logout successful")
     response = flask.redirect("/", code=302)
     response.delete_cookie(key='access_token_cookie', path='/')
     return response
@@ -67,12 +69,14 @@ def login():
     if not account:
         flask.abort(400, description='Invalid login')
     
-    if bcrypt.check_password_hash(account.password, account_data["password"]):
-        token = flask_jwt_extended.create_access_token(
+    if not bcrypt.check_password_hash(account.password, account_data["password"]):
+        flask.abort(400, description='Invalid login')
+        
+    token = flask_jwt_extended.create_access_token(
             identity=account.user_id, 
             expires_delta=datetime.timedelta(days=1)
         )
-        response = flask.redirect(f"/users/{account.user_id}", code=302)
-        flask_jwt_extended.set_access_cookies(response, token)
-        return response
-    flask.abort(400, description='Invalid login')
+    flask.flash("login successful")
+    response = flask.redirect(f"/users/{account.user_id}", code=302)
+    flask_jwt_extended.set_access_cookies(response, token)
+    return response

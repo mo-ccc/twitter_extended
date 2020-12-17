@@ -48,3 +48,18 @@ def parse_emotes(text):
     if " " not in x and x and x not in result:
       result.append(x)
   return result
+  
+@tweets.route('/tweet/id',methods=['DELETE'])
+@flask_jwt_extended.jwt_required
+def delete_tweet():
+    tweet = Tweet.query.filter_by(id=id).first_or_404()
+
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+    user = User.query.get(jwt_id)
+    
+    if not user or user.id != tweet.author_id:
+        flask.abort(400, description="something went wrong")
+    
+    db.session.remove(tweet)
+    db.session.commit()
+    return flask.redirect(f"/users/{jwt_id}", code=302)
