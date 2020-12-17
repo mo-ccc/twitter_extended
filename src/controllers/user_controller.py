@@ -22,7 +22,10 @@ def get_user(id):
     jwt_id = flask_jwt_extended.get_jwt_identity()
     if jwt_id == user.id:
         return flask.render_template("user_page.html", tweets=tweets, user=user, auth=jwt_id, favourite_emotes=favourites)
-    return flask.render_template("user_page.html", tweets=tweets, user=user)
+    
+    owned_emotes = Emote.query.filter_by(author_id=id).all()
+    
+    return flask.render_template("user_page.html", tweets=tweets, user=user, owned_emotes=owned_emotes)
     
 
     

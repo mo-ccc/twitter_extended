@@ -16,7 +16,7 @@ for (i = 0; i < tweets.length; i++) {
 		}
 		// convert the text to an img
 		if (splited[j]) {
-			splited[j] = `<img src="/static/emotes/${splited[j]}.png" onerror="revert(this);" alt="${splited[j]}">`;
+			splited[j] = `<a href="/emotes/search/${splited[j]}"><img src="/static/emotes/${splited[j]}.png" onerror="revert(this);" alt="${splited[j]}"><a>`;
 		}
 	}
 	

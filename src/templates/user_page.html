@@ -7,21 +7,52 @@
 				</div>
 				<img id="profile-image" src="{{ url_for('static', filename='img/default_profile.png') }}">
 				<h2>{{ user.screen_name }}</h2>
-				<aria-label>@{{ user.name }}</aria-label>
+				<aside>@{{ user.name }}</aside>
+				
+				{% if owned_emotes %} 
+					<div class="owned-container">
+						<h3>Owned emotes</h3>
+						{% for emote in owned_emotes %}
+							<a href="/emotes/{{emote.id}}">
+								<img src="{{url_for('static', filename=emote.url)}}" alt="{{emote.name}}">
+							</a>
+						{% endfor %}
+					</div>
+				{% endif %}
 			</div>
 
 			{% if auth %}
-				<div class="favourites">
-					{% for emote in favourite_emotes %}
-						<span class="favourite">{{ emote.name }}</span>
-					{% endfor %}
+				<div class="card text-white bg-secondary mb-3">
+					<div class="card-header">
+						<h3>compose tweet</h3>
+						<div class="favourites">
+							{% for emote in favourite_emotes %}
+								<span class="favourite">{{ emote.name }}</span>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="card-body">
+						<textarea form="tweet-form" id="text" name="text"></textarea>
+					</div>
+					<div class="card-footer text-muted">
+						<form method="post" id="tweet-form" action="/tweet" required>
+							<input type="submit" value="send">
+						</form>
+					</div>
 				</div>
-				<textarea form="tweet-form" id="text" name="text"></textarea>
-				<form method="post" id="tweet-form" action="/tweet" required>
-					<input type="submit" value="send">
-				</form>
 			{% endif %}
 		</div>
 	</div>
+	<style>
+		.owned-container {
+			background-color: rgba(0,0,0,0.2);
+			padding: 20px;
+		}
+	
+		.owned-container > a > img {
+			width: 50px;
+			margin-right: 20px;
+		}
+	</style>
 {% endblock %}
 

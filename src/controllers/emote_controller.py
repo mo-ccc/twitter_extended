@@ -60,6 +60,11 @@ def display_emote(id):
     emote = Emote.query.filter_by(id=id).first_or_404()
     tweets = Tweet.query.filter(Tweet.emotes.any(id=emote.id)).all()
     return flask.render_template("emote_page.html", emote=emote, tweets=tweets, auth=jwt_id)
+    
+@emotes.route("/emotes/search/<name>", methods=["GET"])
+def alternate_emote_url(name):
+    emote = Emote.query.filter_by(name=name).first_or_404()
+    return flask.redirect(f"/emotes/{emote.id}", code=302)
    
 @emotes.route("/emotes/<id>", methods=["POST"])
 @flask_jwt_extended.jwt_required
