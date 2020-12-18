@@ -53,7 +53,7 @@ def create_emote():
     
     return flask.redirect('/emotes', code=302)
     
-@emotes.route("/emotes/<id>", methods=["GET"])
+@emotes.route("/emotes/<int:id>", methods=["GET"])
 @flask_jwt_extended.jwt_optional
 def display_emote(id):
     jwt_id = flask_jwt_extended.get_jwt_identity()
@@ -66,7 +66,7 @@ def alternate_emote_url(name):
     emote = Emote.query.filter_by(name=name).first_or_404()
     return flask.redirect(f"/emotes/{emote.id}", code=302)
    
-@emotes.route("/emotes/<id>", methods=["POST"])
+@emotes.route("/emotes/<int:id>", methods=["POST"])
 @flask_jwt_extended.jwt_required
 def favourite_emote(id):
     jwt_id = flask_jwt_extended.get_jwt_identity()
@@ -85,7 +85,7 @@ def favourite_emote(id):
     db.session.commit()
     return flask.redirect(f"/emotes/{id}", code=302)
     
-@emotes.route("/emotes/<id>", methods=["DELETE"])
+@emotes.route("/emotes/<int:id>", methods=["DELETE"])
 @flask_jwt_extended.jwt_required
 def delete_emote(id):
     jwt_id = flask_jwt_extended.get_jwt_identity

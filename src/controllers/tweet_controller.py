@@ -49,7 +49,7 @@ def parse_emotes(text):
       result.append(x)
   return result
   
-@tweets.route('/tweet/id',methods=['DELETE'])
+@tweets.route('/tweet/<int:id>',methods=['DELETE'])
 @flask_jwt_extended.jwt_required
 def delete_tweet():
     tweet = Tweet.query.filter_by(id=id).first_or_404()
@@ -57,8 +57,8 @@ def delete_tweet():
     jwt_id = flask_jwt_extended.get_jwt_identity()
     user = User.query.get(jwt_id)
     
-    if not user or user.id != tweet.author_id:
-        flask.abort(400, description="something went wrong")
+    if not user or user.id != tweet.author_id and not user.is_admin:
+        flask.abort(400, description="Invalid request")
     
     db.session.remove(tweet)
     db.session.commit()

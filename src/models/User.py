@@ -19,11 +19,15 @@ class User(db.Model):
     is_default = db.Column(db.Boolean(), default=True)
     is_admin = db.Column(db.Boolean(), default=False)
     
-    account = db.relationship('Account', backref='user', uselist=False)
-    tweets = db.relationship('Tweet', backref='user')
+    # backref means account has a reference to user i.e. account.user
+    # cascade delete to remove all related
+    account = db.relationship('Account', backref='user', uselist=False, cascade="all, delete")
+    tweets = db.relationship('Tweet', backref='user', cascade="all, delete")
+    # no cascade delete on emotes is intentional
     emotes = db.relationship('Emote', backref='user')
     favourites = db.relationship(
         'Emote',
         secondary='favourite_emotes',
-        backref='favouriter'
+        backref='favouriter',
+        cascade="all, delete"
     )
