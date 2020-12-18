@@ -4,6 +4,7 @@ import flask_jwt_extended
 from models.User import User
 from models.Emote import Emote
 from models.Tweet import Tweet
+from schemas.EmoteSchema import EmoteSchema
 from app import db
 import os
 from PIL import Image
@@ -30,7 +31,9 @@ def create_emote():
     if not user:
         flask.abort(400, description="something went wrong")
 
-    name = flask.request.form.get("name")
+    emote_data = EmoteSchema().load(flask.request.form.to_dict())
+    name = emote_data["name"]
+    
     if 'image' not in flask.request.files:
         flask.abort(400, description='No image') 
 
@@ -95,7 +98,7 @@ def delete_emote(id):
     
     emote = Emote.query.filter_by(id=id).first_or_404()
     
-    if emote.author_id != user.id:
+    if emote.author_id != user.id and not emote.is_admin:
         flask.abort(400, description="you do not have permission to do that")
     
     os.remove(os.path.join('/static', emote.url))

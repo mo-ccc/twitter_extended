@@ -60,6 +60,6 @@ def delete_tweet():
     if not user or user.id != tweet.author_id and not user.is_admin:
         flask.abort(400, description="Invalid request")
     
-    db.session.remove(tweet)
+    db.session.delete(tweet)
     db.session.commit()
     return flask.redirect(f"/users/{jwt_id}", code=302)

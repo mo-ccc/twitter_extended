@@ -28,7 +28,8 @@ class Tweet(db.Model):
     emotes = db.relationship(
         'Emote',
         secondary='tweet_emote_joint',
-        backref='tweet'
+        backref='tweet',
+        cascade='all, delete'
     )
     
 
