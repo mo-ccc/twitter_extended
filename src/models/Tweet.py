@@ -14,7 +14,13 @@ class Tweet(db.Model):
     __tablename__ = "tweets"
     
     id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    # ondelete="CASCADE" ensures all tweets are deleted when parent is
+    author_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete="CASCADE"),
+        nullable=False
+    )
+    
     text = db.Column(db.String(280), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False,
         default=datetime.utcnow)
@@ -29,7 +35,7 @@ class Tweet(db.Model):
         'Emote',
         secondary='tweet_emote_joint',
         backref='tweet',
-        cascade='all, delete'
+        passive_deletes='all'
     )
     
 

@@ -73,6 +73,7 @@
 										{{ tweet.created_at.strftime('%d/%m/%Y') }}
 										</u></b></small>
 									</time>
+									<button onclick="remove_tweet({{tweet.id}})">x</button>
 								</div>
 								<p class="tweet">{{ tweet.text }}</p>
 							</div>
@@ -90,5 +91,16 @@
 		$(document).ready(function(){
 		  $('[data-toggle="tooltip"]').tooltip();
 		});
+		
+		function remove_tweet(id){
+			console.log(id);
+			fetch("/tweet/" + id, {
+				method: 'DELETE',
+			}).then(() => {
+				location.reload();
+			}).catch(err => {
+				console.error(err)
+			});
+		}
 	</script>
 </body>

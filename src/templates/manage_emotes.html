@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
+	<!--<script src="{{url_for('static', filename='script/delete_emote.js')}}"></script>-->
 	<div class="center">
 		<div class="card" style="padding: 20px;">
 			<div>
@@ -19,6 +20,7 @@
 					<div>
 						<img src="{{ url_for('static', filename=emote.url) }}">	
 						<a href="/emotes/{{ emote.id }}">{{ emote.name }}</a>
+						<button onclick="remove({{emote.id}})">remove</button>
 					</div>
 				{% endfor %}
 			</div>
@@ -31,5 +33,20 @@
 		vertical-align: middle;
 	}
 	</style>
+	
+	<script>
+		function remove(id){
+			console.log(id);
+			fetch("/emotes/" + id, {
+				method: 'DELETE',
+				redirect: 'follow'
+			}).then(() => {
+				location.reload();
+			}).catch(err => {
+				console.error(err)
+			});
+		}
+	</script>
+	
 {% endblock %}
 

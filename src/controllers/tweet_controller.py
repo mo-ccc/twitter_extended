@@ -51,7 +51,7 @@ def parse_emotes(text):
   
 @tweets.route('/tweet/<int:id>',methods=['DELETE'])
 @flask_jwt_extended.jwt_required
-def delete_tweet():
+def delete_tweet(id):
     tweet = Tweet.query.filter_by(id=id).first_or_404()
 
     jwt_id = flask_jwt_extended.get_jwt_identity()
@@ -62,4 +62,4 @@ def delete_tweet():
     
     db.session.delete(tweet)
     db.session.commit()
-    return flask.redirect(f"/users/{jwt_id}", code=302)
+    return 'ok'

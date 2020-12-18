@@ -91,7 +91,7 @@ def favourite_emote(id):
 @emotes.route("/emotes/<int:id>", methods=["DELETE"])
 @flask_jwt_extended.jwt_required
 def delete_emote(id):
-    jwt_id = flask_jwt_extended.get_jwt_identity
+    jwt_id = flask_jwt_extended.get_jwt_identity()
     user = User.query.get(jwt_id)
     if not user:
         flask.abort(400, description="something went wrong")
@@ -101,7 +101,7 @@ def delete_emote(id):
     if emote.author_id != user.id and not emote.is_admin:
         flask.abort(400, description="you do not have permission to do that")
     
-    os.remove(os.path.join('/static', emote.url))
+    os.remove(f"static/{emote.url}")
     db.session.delete(emote)
     db.session.commit()
-    return flask.redirect("/emotes", code=302)
+    return 'ok'
