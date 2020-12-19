@@ -41,9 +41,17 @@ def register():
         user = new_user,
     )
     
-    db.session.add(new_user)
-    db.session.add(new_account)
-    db.session.commit()
+    from sqlalchemy.exc import IntegrityError
+    from psycopg2.errors import UniqueViolation
+    try:
+        db.session.add(new_user)
+        db.session.add(new_account)
+        db.session.commit()
+        
+    except IntegrityError as e:
+        if isinstance(e.orig, UniqueViolation):
+            return 'email or name already exists'
+        
     flask.flash("registration successful")
     
     return flask.redirect('/', code=302)
@@ -63,7 +71,11 @@ def logout():
 def login():
     data = flask.request.form.to_dict()
     
-    account_data = AccountSchema().load(data)
+    from marshmallow.exceptions import ValidationError
+    try:
+        account_data = AccountSchema().load(data)
+    except ValidationError as e:
+        flask.abort(400, description='Invalid login')
     
     account = Account.query.filter_by(email=account_data["email"]).first()
     if not account:

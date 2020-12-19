@@ -69,7 +69,7 @@ def delete(id):
 def get_settings():
     jwt_id = flask_jwt_extended.get_jwt_identity()
     user = User.query.get(jwt_id)
-    
+    account = Account.query.get(jwt_id)
     if not user:
         flask.abort(400, description="Not allowed")
         
