@@ -40,6 +40,10 @@
 				</div>
 				<button type="submit" class="btn btn-primary" onclick="patch({{auth}}, false)">Update password</button>
 			</div>
+			
+			<br>
+			
+			<button type="submit" class="btn btn-danger" onclick="deleteUser({{auth}})">Delete user</button>
 		</div>
 	</div>
 	
@@ -77,6 +81,16 @@
 				body: formData
 			}).then(() => {
 				location.reload();
+			}).catch(err => {
+				console.error(err)
+			});
+		}
+		
+		function deleteUser(id) {
+			fetch("/users/" + id, {
+				method: 'DELETE',
+			}).then(() => {
+				location.replace("/logout");
 			}).catch(err => {
 				console.error(err)
 			});

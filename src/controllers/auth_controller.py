@@ -17,30 +17,32 @@ def register_page():
 @auth.route("/register", methods=["POST"])
 def register():
     data = flask.request.form.to_dict()
-    account_json = {
+    # separating items from the request
+    account_dict = {
         "email" : data["email"],
         "password" : data["password"]
     }
-    user_json = {
+    user_fict = {
         "name" : data["name"],
         "screen_name" : data["name"]
     }
     
     user_schema = UserSchema(partial=True)
-    user_data = user_schema.load(user_json)
+    user_data = user_schema.load(user_dict)
     new_user = User(
         name = user_data["name"],
         screen_name = user_data["screen_name"],
     )
     
     account_schema = AccountSchema()
-    account_data = account_schema.load(account_json)
+    account_data = account_schema.load(account_dict)
     new_account = Account(
         email = account_data["email"],
         password = bcrypt.generate_password_hash(account_data["password"]).decode('utf-8'),
         user = new_user,
     )
     
+    # in the case where the email or name already exists this is needed
     from sqlalchemy.exc import IntegrityError
     from psycopg2.errors import UniqueViolation
     try:
@@ -50,7 +52,8 @@ def register():
         
     except IntegrityError as e:
         if isinstance(e.orig, UniqueViolation):
-            return 'email or name already exists'
+            # will let the person trying to register know
+            return flask.abort(400, description='email or name already exists')
         
     flask.flash("registration successful")
     
@@ -71,6 +74,7 @@ def logout():
 def login():
     data = flask.request.form.to_dict()
     
+    # if a validaion error occurs present invalid login screen
     from marshmallow.exceptions import ValidationError
     try:
         account_data = AccountSchema().load(data)
@@ -90,5 +94,6 @@ def login():
         )
     flask.flash("login successful")
     response = flask.redirect(f"/users/{account.user_id}", code=302)
+    # set the access cookies
     flask_jwt_extended.set_access_cookies(response, token)
     return response

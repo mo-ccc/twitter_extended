@@ -48,10 +48,12 @@ def update_user(id):
         print(e)
         flask.abort(400, description="Invalid request")
     
+    # for all parts of the request update the user with the info provided
     for v in valid_data:
         setattr(user, v, valid_data[v])
     db.session.commit()
     flask.flash("updated user")
+    # return must not be a redirect to prevent infinite loop
     return 'ok'
     
 @users.route('/users/<int:id>', methods=['PATCH'])
@@ -64,8 +66,9 @@ def update_user_security(id):
     
     data = flask.request.form.to_dict()
     
+    # in the request a confimation pass is sent to prevent hackers from changing pass
     confirm_pass = data.pop('confirm')
-    
+    # check if the pass matches
     if not bcrypt.check_password_hash(account.password, confirm_pass):
         flask.abort(400, description="Invalid password")
     
@@ -76,9 +79,11 @@ def update_user_security(id):
         print(e)
         flask.abort(400, description="Invalid request")
     
+    # if user is updating password hash it
     if 'password' in valid_data:
         valid_data["password"] = bcrypt.generate_password_hash(valid_data["password"]).decode('utf-8')
     
+    # for all parts of the request update the account with the info provided
     for v in valid_data:
         setattr(account, v, valid_data[v])
     db.session.commit()

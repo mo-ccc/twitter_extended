@@ -49,6 +49,7 @@ def create_emote():
     secure = secure_filename(f"{name}.png")
     emote = Emote(name=name, url=f"emotes/{secure}", user=user)
     
+    # if emote name already exists this handles that
     from sqlalchemy.exc import IntegrityError
     from psycopg2.errors import UniqueViolation
     try:
@@ -57,7 +58,7 @@ def create_emote():
     except IntegrityError as e:
         if isinstance(e.orig, UniqueViolation):
             flask.flash('emote name already in use, please pick another')
-            return flask.redirect('/emotes', code=302)
+            return flask.redirect('/emotes', code=400)
     
     
     pil_image.save(f"static/emotes/{secure}")
