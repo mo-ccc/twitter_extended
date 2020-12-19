@@ -43,7 +43,12 @@
 			
 			<br>
 			
-			<button type="submit" class="btn btn-danger" onclick="deleteUser({{auth}})">Delete user</button>
+			<div class="inline">
+				<div class="mb-3">
+					<input type="password" class="form-control" id="delConfirm" placeholder="confirm password">
+				</div>
+				<button type="submit" class="btn btn-danger" onclick="deleteUser({{auth}})">Delete user</button>
+			</div>
 		</div>
 	</div>
 	
@@ -87,10 +92,16 @@
 		}
 		
 		function deleteUser(id) {
+			const formData = new FormData();
+			const confirm = document.getElementById("delConfirm").value;
+			formData.append('confirm', confirm);
 			fetch("/users/" + id, {
 				method: 'DELETE',
-			}).then(() => {
-				location.replace("/logout");
+				body: formData
+			}).then((response) => {
+				if (response.status == 200) {
+					location.replace('logout');
+				}
 			}).catch(err => {
 				console.error(err)
 			});

@@ -95,12 +95,19 @@ def update_user_security(id):
 def delete(id):
     jwt_id = flask_jwt_extended.get_jwt_identity()
     user = User.query.get(id)
+    account = Account.query.get(id)
     
     if not user or jwt_id != user.id and not user.is_admin:
         flask.abort(400, description="Not allowed")
     
+    body = flask.request.form.to_dict()
+    password = body["confirm"]
+    if not password or not bcrypt.check_password_hash(account.password, password):
+        flask.abort(400, description="invalid password")
+    
     db.session.delete(user)
     db.session.commit()
+    flask.flash('deleted')
     return 'ok'
     
 @users.route('/settings', methods=['GET'])
