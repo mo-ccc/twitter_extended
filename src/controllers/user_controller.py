@@ -2,11 +2,13 @@ import flask
 from models.User import User
 from models.Tweet import Tweet
 from models.Emote import Emote
+from models.Account import Account
 from models.Favourite_Emotes import favourite_emotes
 from schemas.UserSchema import UserSchema
 from schemas.TweetSchema import TweetSchema
+from schemas.AccountSchema import AccountSchema
 import flask_jwt_extended
-from app import db
+from app import db, bcrypt
 
 users = flask.Blueprint("users", __name__)
 
@@ -38,15 +40,47 @@ def update_user(id):
     
     data = flask.request.form.to_dict()
     
-    user_schema = UserSchema(partial=True, exclude=('name',))
+    user_schema = UserSchema(partial=True, exclude=('name',"verified"))
     
     try:
-        valid_data = user_schema.load(data, exclude=("verified",))
-    except:
+        valid_data = user_schema.load(data)
+    except Exception as e:
+        print(e)
         flask.abort(400, description="Invalid request")
     
     for v in valid_data:
         setattr(user, v, valid_data[v])
+    db.session.commit()
+    flask.flash("updated user")
+    return 'ok'
+    
+@users.route('/users/<int:id>', methods=['PATCH'])
+@flask_jwt_extended.jwt_required
+def update_user_security(id):
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+    account = Account.query.get(id)
+    if not account or jwt_id != account.user_id:
+        flask.abort(400, description="Not allowed")
+    
+    data = flask.request.form.to_dict()
+    
+    confirm_pass = data.pop('confirm')
+    
+    if not bcrypt.check_password_hash(account.password, confirm_pass):
+        flask.abort(400, description="Invalid password")
+    
+    account_schema = AccountSchema(partial=True)
+    try:
+        valid_data = account_schema.load(data)
+    except Exception as e:
+        print(e)
+        flask.abort(400, description="Invalid request")
+    
+    if 'password' in valid_data:
+        valid_data["password"] = bcrypt.generate_password_hash(valid_data["password"]).decode('utf-8')
+    
+    for v in valid_data:
+        setattr(account, v, valid_data[v])
     db.session.commit()
     flask.flash("updated user")
     return 'ok'
@@ -69,8 +103,7 @@ def delete(id):
 def get_settings():
     jwt_id = flask_jwt_extended.get_jwt_identity()
     user = User.query.get(jwt_id)
-    account = Account.query.get(jwt_id)
     if not user:
         flask.abort(400, description="Not allowed")
         
-    return flask.render_template('settings.html')
+    return flask.render_template('settings.html', user=user, auth=jwt_id)

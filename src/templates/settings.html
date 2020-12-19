@@ -2,19 +2,85 @@
 {% block body %}
 	<div class="center">
 		<div class="card" style="padding: 20px;">
-			<form method="post">
-				<label for="screen-name">screen name:</label>
-				<input id="screen-name" name="screen-name">
-			</form>
-			<form method="post">
-				<label for="email">email:</label>
-				<input id="email" name="email">
-				<label for="old-password">old password:</label>
-				<input id="old-password" name="old-password">
-				<label for="new-password">new password:</label>
-				<input id="new-password" name="new-password">
-			</form>
+			<h3>{{user.screen_name}}</h3>
+			<div>
+				<div class="mb-3">
+					<label for="screen-name" class="form-label">screen name:</label>
+					<input id="screen-name" name="screen-name" class="form-control" aria-describedby="nameHelp">
+					<div id="nameHelp" class="form-text">Change screen name</div>
+				</div>
+				<button type="submit" class="btn btn-primary" onclick="putName({{auth}})">Update screen name</button>
+			</div>
+			
+			<br>
+			
+			<div>
+				<div class="mb-3">
+					<label for="email" class="form-label">Email address:</label>
+					<input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+				<div id="emailHelp" class="form-text">Change email</div>
+				</div>
+				<div class="mb-3">
+					<label for="password" class="form-label">Confirm Password:</label>
+					<input type="password" class="form-control" id="password">
+				</div>
+				<button type="submit" class="btn btn-primary" onclick="patch({{auth}}, true)">Update email</button>
+			</div>
+			
+			<br>
+			
+			<div>
+				<div class="mb-3">
+					<label for="old-password" class="form-label">Old Password:</label>
+					<input type="password" class="form-control" id="old-password">
+				</div>
+				<div class="mb-3">
+					<label for="new-password" class="form-label">New Password:</label>
+					<input type="password" class="form-control" id="new-password">
+				</div>
+				<button type="submit" class="btn btn-primary" onclick="patch({{auth}}, false)">Update password</button>
+			</div>
 		</div>
 	</div>
+	
+	<script>
+		function putName(id) {
+			const input = document.getElementById("screen-name").value;
+			const formData = new FormData();
+			formData.append('screen_name', input);
+			fetch("/users/" + id, {
+				method: 'PUT',
+				body: formData
+			}).then(() => {
+				location.reload();
+			}).catch(err => {
+				console.error(err)
+			});
+		}
+		
+		function patch(id, is_email) {
+			const formData = new FormData();
+			if (is_email) {
+				const input = document.getElementById("email").value;
+				const pass = document.getElementById("password").value;
+				formData.append('email', input);
+				formData.append('confirm', pass);
+			}
+			else {
+				const newpass = document.getElementById("new-password").value;
+				const oldpass = document.getElementById("old-password").value;
+				formData.append('password', newpass);
+				formData.append('confirm', oldpass);
+			}
+			fetch("/users/" + id, {
+				method: 'PATCH',
+				body: formData
+			}).then(() => {
+				location.reload();
+			}).catch(err => {
+				console.error(err)
+			});
+		}
+	</script>
 		
 {% endblock %}
