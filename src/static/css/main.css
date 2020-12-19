@@ -1,5 +1,7 @@
 body {
 		background-color: rgb(29, 161, 242);
+		overflow-x: hidden;
+		max-width: 100%;
 	}
 	
 #left-column {
@@ -15,6 +17,7 @@ body {
 	border-radius: 10px;
 	box-shadow: 0 4px 6px 0 rgba(0,0,0,0.5);
 }
+
 #left-column > .white {
 	width: 200px;
 }
@@ -28,12 +31,16 @@ body {
 }
 
 .white h6, .white time, .white p {
-	margin-left: 5px;
+	margin-left: 10px;
 }
 
 .inline, .inline-margin-left {
 	display: flex;
 	align-items: baseline;
+}
+
+.inline {
+	width: 100%;
 }
 
 .inline-margin-left > img {
@@ -110,4 +117,8 @@ body {
 
 .marg-left {
 	margin-left: 20px;
+}
+
+.paddy {
+	width: 85%;
 }

@@ -2,12 +2,12 @@ from app import db
 
 class Account(db.Model):
     __tablename__ = "accounts"
-    id = db.Column(db.Integer, primary_key=True)
     
     user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id', ondelete="CASCADE"),
-        nullable=False
+        nullable=False,
+        primary_key = True
     )
     
     email = db.Column(db.String(), nullable=False, unique=True)

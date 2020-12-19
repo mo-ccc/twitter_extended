@@ -63,3 +63,14 @@ def delete(id):
     db.session.delete(user)
     db.session.commit()
     return 'ok'
+    
+@users.route('/settings', methods=['GET'])
+@flask_jwt_extended.jwt_required
+def get_settings():
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+    user = User.query.get(jwt_id)
+    
+    if not user:
+        flask.abort(400, description="Not allowed")
+        
+    return flask.render_template('settings.html')
