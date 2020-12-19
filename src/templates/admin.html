@@ -3,24 +3,29 @@
 	<div class="center">
 		<div id="main-column">
 			<div class="white">
-				<div class="marg-left">
-					<h1>Stats:</h1>
+					<h3>Stats:</h3>
+					
+					<h4>Max tweets:</h4>
+					<h5>{{mx}} - {{max_user.name}}</h5>
 					
 					<div class="space">
-						<h3>Max tweets:</h3>
-						<h3>{{mx}} - {{max_user.name}}</h3>
-					</div>
-					
-					<div class="space">
-						<h3>Avg tweets per user:</h3>
-						<h3>{{avg}}</h3>
+						<h4>Avg tweets per user:</h4>
+						<h5>{{avg}}</h5>
 					</div>
 					
 					
-					<h1>Dump:</h1>
-				</div>
+					<h3>Dump:</h3>
+					<a href="/admin/dump">get dump</a>
+					
+					<h3>Backup:</h3>
+					<a href="/admin/backup">get backup</a>
 				
 			</div>
 		</div>
 	</div>
+	<style>
+		h5, a {
+			margin-left: 40px;
+		}
+	</style>
 {% endblock %}

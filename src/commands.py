@@ -1,15 +1,15 @@
 import flask
 from app import db, bcrypt
 
-client = flask.Blueprint('client', __name__)
+db_cli = flask.Blueprint('db_cli', __name__)
     
-@client.cli.command('drop')
+@db_cli.cli.command('drop')
 def drop_db():
     db.drop_all()
     db.engine.execute("DROP TABLE IF EXISTS alembic_version;")
     print("dropped all tables")
     
-@client.cli.command('create_admin')
+@db_cli.cli.command('create_admin')
 def create_admin():
     email = input("email: ")
     password = input("password: ")

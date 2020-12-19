@@ -29,8 +29,8 @@ def create_app():
     bcrypt.init_app(app)
     migrate.init_app(app, db)
     
-    from commands import client
-    app.register_blueprint(client)
+    from commands import db_cli
+    app.register_blueprint(db_cli)
     
     from controllers import blueprints as controller_blueprints
     for bp in controller_blueprints:

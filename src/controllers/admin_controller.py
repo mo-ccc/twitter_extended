@@ -43,12 +43,35 @@ def get_admin_page():
     return flask.render_template('admin.html', auth=jwt_id, avg=average_tweets_per_user,
         max_user=user_with_max_tweets, mx=max_tweets)
         
-@admins.route('/admin/dump', methods=['GET'])
+@admins.route('/admin/backup', methods=['GET'])
 @flask_jwt_extended.jwt_required
-def get_dump():
+def get_backup():
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+    user = User.query.get(jwt_id)
+    if not user or not user.is_admin:
+        return flask.abort(404)
+
     import os
     dump = os.popen("pg_dump --dbname=postgres://postgres:postgres@localhost:5432/postgres").read()
     return flask.Response(
         dump, headers={"Content-Disposition":"attachment;filename=dump.psql"}
     )
+
+@admins.route('/admin/dump', methods=['GET'])
+@flask_jwt_extended.jwt_required
+def get_dump():
+    jwt_id = flask_jwt_extended.get_jwt_identity()
+    user = User.query.get(jwt_id)
+    if not user or not user.is_admin:
+        return flask.abort(404)
+
+    dump = db.engine.execute("""
+        select * from users
+        left join accounts on 1=1
+        left join tweets on 1=1
+        left join emotes on 1=1
+        left join favourite_emotes on 1=1
+        left join tweet_emote_joint on 1=1;
+    """).fetchall()
+    return str(dump)
     
