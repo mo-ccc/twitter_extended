@@ -52,7 +52,10 @@ def get_backup():
         return flask.abort(404)
 
     import os
-    dump = os.popen("pg_dump --dbname=postgres://postgres:postgres@localhost:5432/postgres").read()
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+    dump = os.popen(f"pg_dump --dbname=postgres://{os.getenv('DB_URI')}").read()
     return flask.Response(
         dump, headers={"Content-Disposition":"attachment;filename=dump.psql"}
     )

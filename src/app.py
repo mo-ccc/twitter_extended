@@ -21,7 +21,7 @@ migrate = flask_migrate.Migrate()
 
 def create_app():
     app = flask.Flask(__name__)
-    app.config.from_pyfile("default_settings.py")
+    app.config.from_object("default_settings.configuration")
     
     db.init_app(app)
     jwt.init_app(app)
