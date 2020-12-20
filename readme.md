@@ -7,3 +7,7 @@ The security of user information is of great importance. As an added benefit of 
 
 ##### Obligations of a developer
 A developer has professional, ethical and legal obligations both in and out of the workplace.
+
+###### professional obligations
+Professional obligations are those obligations associated with the integrity and 
+####### on time delivery

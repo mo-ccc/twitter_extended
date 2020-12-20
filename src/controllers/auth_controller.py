@@ -22,7 +22,7 @@ def register():
         "email" : data["email"],
         "password" : data["password"]
     }
-    user_fict = {
+    user_dict = {
         "name" : data["name"],
         "screen_name" : data["name"]
     }
