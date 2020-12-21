@@ -1,5 +1,6 @@
 # Security
 #### Mohammed Ahmad
+====
 The security of user information is of great importance. As an added benefit of using flask - a python microframework - and sqlalchemy - an object relational mapping framework - to provide users with an interactive web experience; the frameworks also protect the information of users by together sanitising user input and mitigating sql injection.
 
 ### Input sanitisation
@@ -24,7 +25,6 @@ SQLalchemy provides this very service by interfacing directly with flask and fla
 A developer has professional, ethical and legal obligations both in and out of the workplace. This report aims to discuss whether these obligations are warranted and who/what is impacted by them.
 
 ## professional obligations
-#### Mohammed Ahmad
 Professional obligations are those obligations associated with being courteous and responsible when carrying out ones duties. This involves the professional properly understanding and communicating the responsibilities of their role as well as well as more nuanced details such as delivering their work on time. There is more to it than just blind compliance however; being a professional also means that one is able to have boundaries of their own which should be respected.
 
 ### Timely delivery
