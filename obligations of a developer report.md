@@ -1,6 +1,7 @@
 # Obligations of a developer
 #### Mohammed Ahmad
-====
+====================
+
 A developer has professional, ethical and legal obligations both in and out of the workplace. This report aims to discuss whether these obligations are warranted and who/what is impacted by them.
 
 ## professional obligations
