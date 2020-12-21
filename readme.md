@@ -30,7 +30,10 @@ The app makes use of the venv pip package to create a virtual environment. There
 - run gunicorn on the port of your choice
 ```gunicorn -b 0.0.0.0:{port} "main:create_app"```
 
+Note: It is recommended to setup the web server with https to secure session cookies. See nginx.
+
+
 ## Additional Commands
-- Running ```flask db_cli create_admin``` will allow you to initialize an account with the is_admin property set to true. This allows the account to access the hidden /admin endpoint where the database can be dumped and statistics on users can be viewed.
+- ```flask db_cli create_admin``` will allow an account to be created from the terminal with the is_admin property set to true. This allows the account to access the hidden /admin endpoint where the database can be dumped and statistics on users can be viewed.
 
 - ```flask db_cli drop``` deletes all data from the database. Run ```flask db upgrade``` afterwards to rebuild the tables.
