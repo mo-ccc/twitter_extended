@@ -1,6 +1,6 @@
 # Security
 #### Mohammed Ahmad
-====================
+---
 
 The security of user information is of great importance. As an added benefit of using flask - a python microframework - and sqlalchemy - an object relational mapping framework - to provide users with an interactive web experience; the frameworks also protect the information of users by together sanitising user input and mitigating sql injection.
 
