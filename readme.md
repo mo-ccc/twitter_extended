@@ -1,7 +1,7 @@
 ## About The Project
 This is a flask app that provides a proof of concept as to how custom emotes could be integrated into twitter's mvp. 
 
-![Demo](docs/twotter2.png)
+![Demo](docs/twotter.png)
 
 ## Installation Instructions
 The app makes use of the venv pip package to create a virtual environment. Therefore the package will need to be installed in order to run the app. Thereafter the install instructions are as below **(Linux Only)**:
