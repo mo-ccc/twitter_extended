@@ -16,6 +16,7 @@ def get_admin_page():
     if not user or not user.is_admin:
         return flask.abort(404)
     
+    # query will return the average number of tweets per user
     average_tweets_per_user = db.engine.execute(
         """
         SELECT AVG(count) FROM
@@ -26,6 +27,7 @@ def get_admin_page():
         """
     ).fetchone()[0]
     
+    # query will get the user with the most tweets and the number of tweets they made
     most_tweets_by_one_user = db.engine.execute(
         """
         select id, MAX(count) mx FROM
@@ -55,6 +57,7 @@ def get_backup():
     from dotenv import load_dotenv
     load_dotenv()
     
+    # bash script to run pg_dump on the db
     dump = os.popen(f"pg_dump --dbname=postgres://{os.getenv('DB_URI')}").read()
     return flask.Response(
         dump, headers={"Content-Disposition":"attachment;filename=dump.psql"}
@@ -67,7 +70,8 @@ def get_dump():
     user = User.query.get(jwt_id)
     if not user or not user.is_admin:
         return flask.abort(404)
-
+    
+    # a very big query to get all data from all the tables in the database
     dump = db.engine.execute("""
         select * from users
         left join accounts on 1=1

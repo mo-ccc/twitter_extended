@@ -17,10 +17,13 @@ users = flask.Blueprint("users", __name__)
 def get_user(id):
     user = User.query.filter_by(id=id).first_or_404()
     
+    # returns all tweets the user made ordered by id
     tweets = Tweet.query.filter_by(author_id=id).order_by(Tweet.id.desc()).all()
     
+    # returns all the emotes the user has favourited
     favourites = Emote.query.filter(Emote.favouriter.any(id=id)).all()
     
+    # if logged in as the user display page with the ability to make tweets
     jwt_id = flask_jwt_extended.get_jwt_identity()
     if jwt_id == user.id:
         return flask.render_template("user_page.html", tweets=tweets, user=user, auth=jwt_id, favourite_emotes=favourites, owner=True)
@@ -118,4 +121,5 @@ def get_settings():
     if not user:
         flask.abort(400, description="Not allowed")
         
+    # returns setting page for user where they can update their details
     return flask.render_template('settings.html', user=user, auth=jwt_id)

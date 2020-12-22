@@ -42,14 +42,16 @@ def create_emote():
     if file_extension not in [".jpg", ".png", ".jpeg"]:
         flask.abort(400, description="Not an image")
 
+    # resizing image to 250x250 pixels and converting to png
     pil_image = Image.open(image)
     pil_image = pil_image.resize((250,250), Image.ANTIALIAS)
         
+    # sanitise user provided filename to ensure that errors do not occur
     from werkzeug.utils import secure_filename
     secure = secure_filename(f"{name}.png")
     emote = Emote(name=name, url=f"emotes/{secure}", user=user)
     
-    # if emote name already exists this handles that
+    # commit emote data to db. if emote name already exists except block handles that
     from sqlalchemy.exc import IntegrityError
     from psycopg2.errors import UniqueViolation
     try:

@@ -42,7 +42,7 @@ def register():
         user = new_user,
     )
     
-    # in the case where the email or name already exists this is needed
+    # in the case where the email or name already exists this try/except block is needed
     from sqlalchemy.exc import IntegrityError
     from psycopg2.errors import UniqueViolation
     try:
@@ -52,7 +52,7 @@ def register():
         
     except IntegrityError as e:
         if isinstance(e.orig, UniqueViolation):
-            # will let the person trying to register know
+            # will let the person trying to register know details already exist
             return flask.abort(400, description='email or name already exists')
         
     flask.flash("registration successful")
@@ -81,19 +81,22 @@ def login():
     except ValidationError as e:
         flask.abort(400, description='Invalid login')
     
+    # if email doesn't exist present invalid login screen
     account = Account.query.filter_by(email=account_data["email"]).first()
     if not account:
         flask.abort(400, description='Invalid login')
     
+    # if password is incorrect present invalid login screen
     if not bcrypt.check_password_hash(account.password, account_data["password"]):
         flask.abort(400, description='Invalid login')
         
+    # create jwt token for use to authenticate
     token = flask_jwt_extended.create_access_token(
             identity=account.user_id, 
             expires_delta=datetime.timedelta(days=1)
-        )
+            )
     flask.flash("login successful")
     response = flask.redirect(f"/users/{account.user_id}", code=302)
-    # set the access cookies
+    # set the access cookies in the browser that sent the request
     flask_jwt_extended.set_access_cookies(response, token)
     return response

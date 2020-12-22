@@ -19,18 +19,19 @@ def homepage():
     
 @tweets.route('/tweet', methods=['POST'])
 @flask_jwt_extended.jwt_required
-def send_tweet():
+def send_tweet(): 
     jwt_id = flask_jwt_extended.get_jwt_identity()
     user = User.query.get(jwt_id)
     if not user:
         flask.abort(400, description="something went wrong")
     
+    # validation and creation of the tweet
     data = flask.request.form.to_dict()
     tweet_data = TweetSchema().load(data, partial=("author_id"))
     input_content = tweet_data["text"] + " "
     tweet = Tweet(text=input_content, user=user)
     
-    # filter out emotes from the tweet and add tweet+emotes to the tweet_emote_joint table
+    # filters out emotes from the tweet and adds tweet+emotes to the tweet_emote_joint table
     emotes_in_tweet = parse_emotes(tweet_data["text"])
     emotes = [Emote.query.filter_by(name=x).first() for x in emotes_in_tweet]
     for x in emotes:
@@ -41,6 +42,8 @@ def send_tweet():
     db.session.commit()
     return flask.redirect(f"/users/{jwt_id}", code=302)
     
+# a small function to parse emotes from a string
+# emotes are surrounded by colons like in discord
 def parse_emotes(text):
   result = []
   splited = text.split(":")
