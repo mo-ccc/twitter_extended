@@ -43,3 +43,32 @@ Note: It is recommended to setup the web server with https to secure session coo
 ## Live version
 A live version will be available on January 3. It will be available at the domain:
 twitterextended.ml
+
+## ERD's and DataFlow
+
+This application builds on the mvp feature of twitter: tweeting. While this application doesn't implement every aspect of what makes up twitter it allows individuals to register, login, post tweets, view tweets and view profiles for other users. Additionally this application showcases a new feature which is the ability to create, favorite and use customized emotes in tweets. The ERD's are shown below.
+
+#### Before
+
+![before](docs/twitter_erd.png)
+
+
+#### After
+
+![after](docs/emoji_addition_twitter_extended.png)
+
+
+
+-----
+
+The dataflow diagram shows the flow of data throughout the system. 
+![dataflow diagram](docs/twitter_extended_dfd.png)
+
+
+
+----
+
+## Aws application architecture 
+
+For the live version of this application aws is used to enable users to interact with the application. The architecture diagram is shown below.
+![application architecture diagram](docs/twitter_extended_aad.png)
