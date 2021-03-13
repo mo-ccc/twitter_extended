@@ -41,8 +41,7 @@ Note: It is recommended to setup the web server with https to secure session coo
 - ```flask db_cli drop``` deletes all data from the database. Run ```flask db upgrade``` afterwards to rebuild the tables.
 
 ## Live version
-A live version will be available on January 3. It will be available at the domain:
-twitterextended.ml
+http://twitterextended.ml
 
 ## ERD's and DataFlow
 

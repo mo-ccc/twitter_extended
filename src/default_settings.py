@@ -8,7 +8,7 @@ load_dotenv()
 class Config():
     @property
     def SQLALCHEMY_DATABASE_URI(self):
-        value = f"postgresql+psycopg2://{os.getenv('DB_URI')}"
+        value = os.getenv("DB_URI")
         if not value:
             raise ValueError("no DB_URI environment variable")
         return value
@@ -41,7 +41,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     
-env = os.getenv("FLASK_DEV")
+env = os.getenv("FLASK_ENV")
 
 if env == "development":
     configuration = DevelopmentConfig()
